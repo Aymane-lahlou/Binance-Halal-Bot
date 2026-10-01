@@ -1,0 +1,17 @@
+.env
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+user_data/data/
+user_data/logs/
+user_data/backtest_results/
+user_data/hyperopt_results/
+user_data/plot/
+user_data/freqaimodels/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/

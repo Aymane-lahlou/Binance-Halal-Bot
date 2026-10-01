@@ -1,0 +1,29 @@
+services:
+  freqtrade:
+    container_name: trading-binance
+    image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./user_data:/freqtrade/user_data
+    networks:
+      - traefik-public
+    ports:
+      - "127.0.0.1:8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.trading-binance.rule=Host(`${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.trading-binance.entrypoints=websecure"
+      - "traefik.http.routers.trading-binance.tls=true"
+      - "traefik.http.routers.trading-binance.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+      - "traefik.http.services.trading-binance.loadbalancer.server.port=8080"
+    command: >
+      trade
+      --config /freqtrade/user_data/config.json
+      --strategy HalalSpotStrategy
+
+networks:
+  traefik-public:
+    external: true
